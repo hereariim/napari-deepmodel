@@ -18,11 +18,8 @@ contributions:
       python_name: napari_deepmodel._widget:ExampleQWidget
       title: Make example QWidget
     - id: napari-deepmodel.make_magic_widget
-      python_name: napari_deepmodel._widget:example_magic_widget
+      python_name: napari_deepmodel._widget:make_segmentation
       title: Make example magic widget
-    - id: napari-deepmodel.make_func_widget
-      python_name: napari_deepmodel._widget:example_function_widget
-      title: Make example function widget 
   readers:
     - command: napari-deepmodel.get_reader
       accepts_directories: false
@@ -42,7 +39,4 @@ contributions:
     - command: napari-deepmodel.make_qwidget
       display_name: Example QWidget
     - command: napari-deepmodel.make_magic_widget
-      display_name: Example Magic Widget
-    - command: napari-deepmodel.make_func_widget
-      autogenerate: true
-      display_name: Example Function Widget 
+      display_name: Deep model segmentation
