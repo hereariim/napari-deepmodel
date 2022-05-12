@@ -66,10 +66,10 @@ def deep_model_segmentation(
         return (2. * intersection) / (K.sum(y_true_f * y_true_f) + K.sum(y_pred_f * y_pred_f) + eps) #eps pour éviter la division par 0 
     
     #Pré traitement
-    image_reshaped,size_ = redimension(layer)
+    image_reshaped,size_ = redimension(x)
 
     #Traitement
-    model_new = tf.keras.models.load_model("best_model_FL_BCE_0_5.h5",custom_objects={'dice_coefficient': dice_coefficient})
+    model_new = tf.keras.models.load_model("C:\Users\Metuarea Herearii\napari-deepmodel\src\napari_deepmodel\best_model_FL_BCE_0_5.h5",custom_objects={'dice_coefficient': dice_coefficient})
     prediction = model_new.predict(image_reshaped)
     
     #Post traitement
