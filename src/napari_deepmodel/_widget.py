@@ -10,10 +10,13 @@ from magicgui import magic_factory
 from qtpy.QtWidgets import QHBoxLayout, QPushButton, QWidget
 
 
+from enum import Enum
+from subprocess import call
 import numpy
 import napari
 from napari.types import ImageData
 import cv2
+from magicgui import magic_factory, magicgui
 from skimage import data
 import sys
 
@@ -23,10 +26,15 @@ from tensorflow import keras
 from focal_loss import BinaryFocalLoss
 from tensorflow.keras import backend as K
 import numpy as np
+import cv2
 from skimage.io import imread, imshow, imread_collection, concatenate_images
 from skimage.transform import resize
+from napari.qt.threading import thread_worker
 from napari.utils.notifications import show_info
 from skimage.io import imread
+from napari_plugin_engine import napari_hook_implementation
+from enum import Enum
+from napari.utils.notifications import show_info
 
 class ExampleQWidget(QWidget):
     # your QWidget.__init__ can optionally request the napari viewer instance
@@ -47,7 +55,7 @@ class ExampleQWidget(QWidget):
         print("napari has", len(self.viewer.layers), "layers")
 
 
-def deep_model_segmentation(
+def do_image_segmentation(
     layer: ImageData
     ) -> ImageData:
     
@@ -65,21 +73,18 @@ def deep_model_segmentation(
         intersection = K.sum(y_true_f * y_pred_f)
         return (2. * intersection) / (K.sum(y_true_f * y_true_f) + K.sum(y_pred_f * y_pred_f) + eps) #eps pour éviter la division par 0 
     
-    #Pré traitement
     image_reshaped,size_ = redimension(layer)
 
-    #Traitement
-    model_new = tf.keras.models.load_model("C:\Users\Metuarea Herearii\napari-deepmodel\src\napari_deepmodel\best_model_FL_BCE_0_5.h5",custom_objects={'dice_coefficient': dice_coefficient})
+    model_new = tf.keras.models.load_model("C:\\Users\\Metuarea Herearii\\napari-deepmodel\\src\\napari_deepmodel\\best_model_FL_BCE_0_5.h5",custom_objects={'dice_coefficient': dice_coefficient})
     prediction = model_new.predict(image_reshaped)
-    
-    #Post traitement
     preds_test_t = (prediction > 0.30000000000000004).astype(np.uint8)
     temp=np.squeeze(preds_test_t[0,:,:,0])*255
     
     return cv2.resize(temp, dsize=(size_[1],size_[0]))
 
 @magic_factory(call_button="Run")
-def make_segmentation(
-    layer: ImageData) -> ImageData:
+def do_model_segmentation(
+    layer: ImageData, radio_option=1
+    ) -> ImageData:
     show_info('Succes !')
-    return deep_model_segmentation(layer)
+    return do_image_segmentation(layer)

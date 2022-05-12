@@ -18,7 +18,7 @@ contributions:
       python_name: napari_deepmodel._widget:ExampleQWidget
       title: Make example QWidget
     - id: napari-deepmodel.make_magic_widget
-      python_name: napari_deepmodel._widget:make_segmentation
+      python_name: napari_deepmodel._widget:do_model_segmentation
       title: Make example magic widget
   readers:
     - command: napari-deepmodel.get_reader
