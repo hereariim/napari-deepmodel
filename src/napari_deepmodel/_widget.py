@@ -77,7 +77,7 @@ def do_image_segmentation(
 
     model_new = tf.keras.models.load_model("C:\\Users\\Metuarea Herearii\\napari-deepmodel\\src\\napari_deepmodel\\best_model_FL_BCE_0_5.h5",custom_objects={'dice_coefficient': dice_coefficient})
     prediction = model_new.predict(image_reshaped)
-    preds_test_t = (prediction > 0.30000000000000004).astype(np.uint8)
+    preds_test_t = (prediction > 0.2).astype(np.uint8)
     temp=np.squeeze(preds_test_t[0,:,:,0])*255
     
     return cv2.resize(temp, dsize=(size_[1],size_[0]))
